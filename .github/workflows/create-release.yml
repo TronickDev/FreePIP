@@ -26,11 +26,14 @@ jobs:
         run: |
           cd ~
           ls -a
+          cat .bashrc
           cd ~/theos
           ls -a
           echo "TEST"
+          export THEOS=~/theos
+          echo 'export THEOS=~/theos' >> ~/.bashrc
+          echo 'export PATH=$THEOS/bin:$PATH' >> ~/.bashrc
           echo $THEOS
-          cat .bashrc
           cd $THEOS/sdks
           rm -rf *
           wget "https://github.com/theos/sdks/archive/refs/heads/master.tar.gz"

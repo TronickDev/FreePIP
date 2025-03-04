@@ -24,6 +24,9 @@ jobs:
 
       - name: Download iOS SDKs
         run: |
+          cd ~
+          ls -a
+          cat .bashrc
           cd $THEOS/sdks
           rm -rf *
           wget "https://github.com/theos/sdks/archive/refs/heads/master.tar.gz"

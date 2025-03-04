@@ -18,10 +18,11 @@ jobs:
       - name: Install Theos
         run: |
           # Theos Setup
+          cd ~
           yes | bash -c "$(curl -fsSL https://raw.githubusercontent.com/theos/theos/master/bin/install-theos)"
           source ~/.bashrc
 
-      - name: Download iOS SDK
+      - name: Download iOS SDKs
         run: |
           cd $THEOS/sdks
           rm -rf *
@@ -58,10 +59,11 @@ jobs:
       - name: Install Theos
         run: |
           # Theos Setup
+          cd ~
           yes | bash -c "$(curl -fsSL https://raw.githubusercontent.com/roothide/theos/master/bin/install-theos)"
           source ~/.bashrc
 
-      - name: Download iOS SDK
+      - name: Download iOS SDKs
         run: |
           cd $THEOS/sdks
           rm -rf *

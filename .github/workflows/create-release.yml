@@ -14,6 +14,21 @@ jobs:
         run: |
           sudo apt update -y
           sudo apt install bash curl sudo git -y
+
+          cd ~
+          mkdir theos
+          
+          export THEOS=~/theos
+          source ~/.bashrc
+          echo $THEOS 
+
+          echo 'export THEOS=~/theos' >> ~/.bashrc
+          source ~/.bashrc
+          echo $THEOS
+          
+          echo 'export PATH=$THEOS:$PATH' >> ~/.bashrc
+          source ~/.bashrc
+          echo $THEOS
           
       - name: Install Theos
         run: |

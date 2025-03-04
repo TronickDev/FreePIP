@@ -26,6 +26,10 @@ jobs:
         run: |
           cd ~
           ls -a
+          cd ~/theos
+          ls -a
+          echo "TEST"
+          echo $THEOS
           cat .bashrc
           cd $THEOS/sdks
           rm -rf *

@@ -1,0 +1,118 @@
+name: create-release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  compile-FreePIP-Rootless:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt update -y
+          sudo apt install bash curl sudo git -y
+          
+      - name: Install Theos
+        run: |
+          # Theos Setup
+          yes | bash -c "$(curl -fsSL https://raw.githubusercontent.com/theos/theos/master/bin/install-theos)"
+          source ~/.bashrc
+
+      - name: Download iOS SDK
+        run: |
+          cd $THEOS/sdks
+          rm -rf *
+          wget "https://github.com/theos/sdks/archive/refs/heads/master.tar.gz"
+          tar -xf master.tar.gz -C $THEOS/sdks
+          mv sdks-master/* $THEOS/sdks
+          rm master.tar.gz
+          rm -rf sdks-master/
+          
+      - name: Compile tweak
+        run: |
+          cd ~/work/FreePIP/FreePIP
+          make clean && make package THEOS_PACKAGE_SCHEME=rootless
+          mv packages/jp.soh.freepip_0.0.4-1+debug_iphoneos-arm64.deb packages/FreePIP-rootless-arm64-apple-ios.deb
+          
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FreePIP-rootless-arm64-apple-ios
+          path: ~/work/FreePIP/FreePIP/FreePIP-rootless-arm64-apple-ios.deb
+
+
+  compile-FreePIP-Roothide:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt update -y
+          sudo apt install bash curl sudo git -y
+          
+      - name: Install Theos
+        run: |
+          # Theos Setup
+          yes | bash -c "$(curl -fsSL https://raw.githubusercontent.com/roothide/theos/master/bin/install-theos)"
+          source ~/.bashrc
+
+      - name: Download iOS SDK
+        run: |
+          cd $THEOS/sdks
+          rm -rf *
+          wget "https://github.com/theos/sdks/archive/refs/heads/master.tar.gz"
+          tar -xf master.tar.gz -C $THEOS/sdks
+          mv sdks-master/* $THEOS/sdks
+          rm master.tar.gz
+          rm -rf sdks-master/
+          
+      - name: Compile tweak
+        run: |
+          cd ~/work/FreePIP/FreePIP
+          make clean && make package THEOS_PACKAGE_SCHEME=roothide
+          mv packages/jp.soh.freepip_0.0.4-1+debug_iphoneos-arm64e.deb packages/FreePIP-roothide-arm64e-apple-ios.deb
+          
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FreePIP-roothide-arm64e-apple-ios
+          path: ~/work/FreePIP/FreePIP/FreePIP-roothide-arm64e-apple-ios.deb
+
+
+  upload-release:
+    needs:
+      - compile-FreePIP-Rootless
+      - compile-FreePIP-Roothide
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download package artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: FreePIP-rootless-arm64-apple-ios
+
+      - name: Download package artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: FreePIP-roothide-arm64e-apple-ios
+          
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "FreePIP - Un-Snap & Scale PiP on iOS"
+          body: "Date: ${{ github.event.repository.updated_at}} - just removed the colored border and it is not actiavted by default."
+          draft: false
+          prerelease: false
+          tag_name: v0.0.4-1
+          files: |
+            FreePIP-rootless-arm64-apple-ios.deb
+            FreePIP-roothide-arm64e-apple-ios.deb
+
+  

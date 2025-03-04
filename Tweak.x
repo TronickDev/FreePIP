@@ -25,7 +25,7 @@
 // End Ref
 
 
-static BOOL locked = NO;
+static BOOL locked;
 
 static UIView *getContentView(SBPIPContainerViewController *self) {
     if ([self respondsToSelector:@selector(pictureInPictureViewController)])
@@ -37,9 +37,10 @@ static UIView *getContentView(SBPIPContainerViewController *self) {
 -(void)loadView {
     %orig;
 
+    locked = YES; //Always make it snapy after the PIP player is started like orignal
     UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
     [getContentView(self) addGestureRecognizer:longPressGesture];
-    [self setupBorder];
+    //[self setupBorder];
 }
 
 // iOS13
@@ -84,7 +85,7 @@ static UIView *getContentView(SBPIPContainerViewController *self) {
 
     locked = !locked; // Revert the value
 
-    [self setupBorder];
+    //[self setupBorder];
 }
 
 %new
@@ -136,12 +137,5 @@ static UIView *getTargetView(SBPIPInteractionController *self, UIGestureRecogniz
 
 
 %ctor {
-    // Somehow, ifdef does not work here
-    #if TARGET_OS_SIMULATOR
-    NSLog(@"freepip - target is simulator");
-    #else
-    NSLog(@"frepip - target is a real device");
-    #endif
-
     %init; // initialize the tweak
 }

@@ -3,9 +3,6 @@ name: create-release
 on:
   workflow_dispatch:
 
-env:
-  THEOS: ~/theos
-
 jobs:
   compile-FreePIP-Rootless:
     runs-on: ubuntu-latest
@@ -23,7 +20,7 @@ jobs:
           # Theos Setup
           cd ~
           yes | bash -c "$(curl -fsSL https://raw.githubusercontent.com/theos/theos/master/bin/install-theos)"
-          source ~/.bashrc
+          echo "THEOS=$HOME/theos" >> $GITHUB_ENV
 
       - name: Download iOS SDKs
         run: |
@@ -64,7 +61,7 @@ jobs:
           # Theos Setup
           cd ~
           yes | bash -c "$(curl -fsSL https://raw.githubusercontent.com/roothide/theos/master/bin/install-theos)"
-          source ~/.bashrc
+          echo "THEOS=$HOME/theos" >> $GITHUB_ENV
 
       - name: Download iOS SDKs
         run: |

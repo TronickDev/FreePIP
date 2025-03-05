@@ -3,6 +3,9 @@ name: create-release
 on:
   workflow_dispatch:
 
+env:
+  THEOS: ~/theos
+
 jobs:
   compile-FreePIP-Rootless:
     runs-on: ubuntu-latest
@@ -24,9 +27,6 @@ jobs:
 
       - name: Download iOS SDKs
         run: |
-          export THEOS=~/theos
-          source ~/.bashrc
-          echo $THEOS
           cd $THEOS/sdks
           rm -rf *
           wget "https://github.com/theos/sdks/archive/refs/heads/master.tar.gz"
@@ -37,9 +37,6 @@ jobs:
           
       - name: Compile tweak
         run: |
-          export THEOS=~/theos
-          source ~/.bashrc
-          echo $THEOS
           cd ~/work/FreePIP/FreePIP
           make clean && make package THEOS_PACKAGE_SCHEME=rootless
           mv packages/jp.soh.freepip_0.0.4-1+debug_iphoneos-arm64.deb packages/FreePIP-rootless-arm64-apple-ios.deb
@@ -71,9 +68,6 @@ jobs:
 
       - name: Download iOS SDKs
         run: |
-          echo 'export THEOS=~/theos' >> ~/.bashrc
-          source ~/.bashrc
-          echo $THEOS
           cd $THEOS/sdks
           rm -rf *
           wget "https://github.com/theos/sdks/archive/refs/heads/master.tar.gz"
@@ -84,8 +78,6 @@ jobs:
           
       - name: Compile tweak
         run: |
-          echo 'export THEOS=~/theos' >> ~/.bashrc
-          source ~/.bashrc
           echo $THEOS
           cd ~/work/FreePIP/FreePIP
           make clean && make package THEOS_PACKAGE_SCHEME=roothide

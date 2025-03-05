@@ -14,21 +14,6 @@ jobs:
         run: |
           sudo apt update -y
           sudo apt install bash curl sudo git -y
-
-          cd ~
-          mkdir theos
-          
-          export THEOS=~/theos
-          source ~/.bashrc
-          echo $THEOS 
-
-          echo 'export THEOS=~/theos' >> ~/.bashrc
-          source ~/.bashrc
-          echo $THEOS
-          
-          echo 'export PATH=$THEOS:$PATH' >> ~/.bashrc
-          source ~/.bashrc
-          echo $THEOS
           
       - name: Install Theos
         run: |
@@ -39,15 +24,8 @@ jobs:
 
       - name: Download iOS SDKs
         run: |
-          cd ~
-          ls -a
-          cat .bashrc
-          cd ~/theos
-          ls -a
-          echo "TEST"
-          export THEOS=~/theos
           echo 'export THEOS=~/theos' >> ~/.bashrc
-          echo 'export PATH=$THEOS/bin:$PATH' >> ~/.bashrc
+          source ~/.bashrc
           echo $THEOS
           cd $THEOS/sdks
           rm -rf *
@@ -59,6 +37,9 @@ jobs:
           
       - name: Compile tweak
         run: |
+          echo 'export THEOS=~/theos' >> ~/.bashrc
+          source ~/.bashrc
+          echo $THEOS
           cd ~/work/FreePIP/FreePIP
           make clean && make package THEOS_PACKAGE_SCHEME=rootless
           mv packages/jp.soh.freepip_0.0.4-1+debug_iphoneos-arm64.deb packages/FreePIP-rootless-arm64-apple-ios.deb
@@ -90,6 +71,9 @@ jobs:
 
       - name: Download iOS SDKs
         run: |
+          echo 'export THEOS=~/theos' >> ~/.bashrc
+          source ~/.bashrc
+          echo $THEOS
           cd $THEOS/sdks
           rm -rf *
           wget "https://github.com/theos/sdks/archive/refs/heads/master.tar.gz"
@@ -100,6 +84,9 @@ jobs:
           
       - name: Compile tweak
         run: |
+          echo 'export THEOS=~/theos' >> ~/.bashrc
+          source ~/.bashrc
+          echo $THEOS
           cd ~/work/FreePIP/FreePIP
           make clean && make package THEOS_PACKAGE_SCHEME=roothide
           mv packages/jp.soh.freepip_0.0.4-1+debug_iphoneos-arm64e.deb packages/FreePIP-roothide-arm64e-apple-ios.deb

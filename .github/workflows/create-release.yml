@@ -24,7 +24,7 @@ jobs:
 
       - name: Download iOS SDKs
         run: |
-          echo 'export THEOS=~/theos' >> ~/.bashrc
+          export THEOS=~/theos
           source ~/.bashrc
           echo $THEOS
           cd $THEOS/sdks
@@ -37,7 +37,7 @@ jobs:
           
       - name: Compile tweak
         run: |
-          echo 'export THEOS=~/theos' >> ~/.bashrc
+          export THEOS=~/theos
           source ~/.bashrc
           echo $THEOS
           cd ~/work/FreePIP/FreePIP

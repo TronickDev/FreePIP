@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: FreePIP-rootless-arm64-apple-ios
-          path: ~/work/FreePIP/FreePIP/FreePIP-rootless-arm64-apple-ios.deb
+          path: ~/work/FreePIP/FreePIP/packages/FreePIP-rootless-arm64-apple-ios.deb
 
 
   compile-FreePIP-Roothide:
@@ -84,7 +84,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: FreePIP-roothide-arm64e-apple-ios
-          path: ~/work/FreePIP/FreePIP/FreePIP-roothide-arm64e-apple-ios.deb
+          path: ~/work/FreePIP/FreePIP/packages/FreePIP-roothide-arm64e-apple-ios.deb
 
 
   upload-release:
